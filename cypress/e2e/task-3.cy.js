@@ -4,7 +4,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 
 describe('test case automation task 3', () => {
   it('checks book store app', () => {
-    // intercepting the response for the request
+    // intercepting the response for the specific ISBN request
     cy.intercept(
       'GET',
       'https://demoqa.com/BookStore/v1/Book?ISBN=9781593277574',
@@ -23,7 +23,7 @@ describe('test case automation task 3', () => {
           website: 'https://leanpub.com/understandinges6/read',
         },
       },
-    ).as('getBook')
+    ).as('getSpecificBook')
 
     // visiting url
     cy.visit('https://demoqa.com/')
@@ -42,7 +42,7 @@ describe('test case automation task 3', () => {
     cy.get('.profile-wrapper').should('contain', 'Understanding ECMAScript 6')
 
     // Verifying the intercepted response
-    cy.wait('@getBook').then((intercept) => {
+    cy.wait('@getSpecificBook').then((intercept) => {
       expect(intercept.response.statusCode).to.eq(200)
       expect(intercept.response.body).to.deep.equal({
         isbn: '9781593277574',

@@ -23,23 +23,28 @@ describe('test cacse automation task 1', () => {
     cy.get('.subjects-auto-complete__menu').contains('Computer Science').click()
     cy.get('#currentAddress').click().type('Address 1')
     cy.get('#hobbiesWrapper').contains('Music').click()
-    // getting problem in state/city tried different locator
-    // but couldn't get it right
-    cy.get('#state').contains('Select State')
-    // .select('NCR').should('have.value', 'NCR')
-    cy.get('#subjectsContainer').click().type('{enter}')
-    // cy.get('#submit').click()
+    cy.get('input#react-select-3-input').type('NCR{enter}', { force: true })
+    cy.get('input#react-select-4-input').type('Delhi{enter}', { force: true })
 
-    // verifying form data
-    cy.get('#firstName').should('have.value', 'Cowlar')
-    cy.get('#lastName').should('have.value', 'Developer')
-    cy.get('#userEmail').should('have.value', 'qaengineer@cowlar.com')
-    // cy.get('#genterWrapper').should('be.checked')
-    cy.get('#userNumber').should('have.value', '0123456789')
-    // cy.get('#subjectContainer').should('have.value', 'Computer Science')
-    // cy.get('#hobbiesWrapper').should('be.checked')
-    cy.get('#currentAddress').should('have.value', 'Address 1')
+    // clicking on submit button
+    cy.get('button#submit').click({ force: true })
 
-    // cy.get('#closeLargeModal').click()
+    //verifying information presented in the modal is the same as provided
+    cy.get('.table.table-dark tbody').within(() => {
+      cy.contains('tr', 'Student Name').should('contain', 'Cowlar Developer')
+      cy.contains('tr', 'Student Email').should(
+        'contain',
+        'qaengineer@cowlar.com',
+      )
+      cy.contains('tr', 'Gender').should('contain', 'Male')
+      cy.contains('tr', 'Mobile').should('contain', '0123456789')
+      cy.contains('tr', 'Date of Birth').should('contain', '08 August,2023')
+      cy.contains('tr', 'Subjects').should('contain', 'Computer Science')
+      cy.contains('tr', 'Address').should('contain', 'Address 1')
+      cy.contains('tr', 'State and City').should('contain', 'NCR Delhi')
+    })
+
+    // closing the modal
+    cy.get('button#closeLargeModal').click({ force: true })
   })
 })
